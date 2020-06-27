@@ -2,10 +2,15 @@
 #define INCLUDE_IO_CONSOLE_LOGGER_HPP_
 
 #include <string>
-#include "config.hpp"
 #include <pthread.h>
 
+#define LOGGER_PREFIX_INFO		"[INFO]"
+#define LOGGER_PREFIX_WARN		"[WARN]"
+#define LOGGER_PREFIX_ERROR		"[ERRO]"
+
 namespace io {
+
+namespace console {
 
 class logger;
 extern logger logger_info;
@@ -35,6 +40,8 @@ public:
 	logger& operator <<(const char *string);
 	logger& operator <<(std::string &string);
 };
+
+}
 
 }
 

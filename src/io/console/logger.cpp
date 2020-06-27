@@ -1,8 +1,10 @@
 #include "io/console/logger.hpp"
-#include "ctrl/global.hpp"
 #include <iostream>
+#include "global/global.hpp"
 
 namespace io {
+
+namespace console {
 
 logger logger_info(LOGGER_INFO);
 logger logger_warn(LOGGER_WARN);
@@ -57,6 +59,8 @@ logger& logger::operator <<(const char *string) {
 
 logger& logger::operator <<(std::string &string) {
 	return *this << string.c_str();
+}
+
 }
 
 }
