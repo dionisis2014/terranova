@@ -55,6 +55,12 @@ bool shaderManager::attachUniform(std::string name, uniformUsage_t usage) {
 		case UNIFORM_USAGE_MATRIX_PROJVIEW:
 			shaderManagerUniformsSpecial[3] = location;
 			break;
+		case UNIFORM_USAGE_LIGHT_AMBIENT:
+			shaderManagerUniformsSpecial[4] = location;
+			break;
+		case UNIFORM_USAGE_LIGHT_AMBIENT_COLOR:
+			shaderManagerUniformsSpecial[5] = location;
+			break;
 		default:
 			break;
 		}
@@ -186,6 +192,12 @@ GLint shaderManager::getUniform(uniformUsage_t usage) {
 		break;
 	case UNIFORM_USAGE_MATRIX_PROJVIEW:
 		return shaderManagerUniformsSpecial[3];
+		break;
+	case UNIFORM_USAGE_LIGHT_AMBIENT:
+		return shaderManagerUniformsSpecial[4];
+		break;
+	case UNIFORM_USAGE_LIGHT_AMBIENT_COLOR:
+		return shaderManagerUniformsSpecial[5];
 		break;
 	default:
 		for (std::size_t i = 0; i < shaderManagerUniforms.size(); i++)

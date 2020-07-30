@@ -4,9 +4,10 @@
 in vec3 fragmentColor;
 in vec3 fragmentNormal;
 
-//output color
+//output data
 out vec4 fragmentColorOut;
 
 void main() {
-	fragmentColorOut = vec4(fragmentColor, 1.0);
+	vec3 colorOutput = fragmentColor;
+	fragmentColorOut = vec4(colorOutput, 1.0);
 }

@@ -12,17 +12,24 @@ protected:
 	std::vector<bool> sceneObjectMeshIndexed;
 	std::vector<shaderManager*> sceneObjectShader;
 
+	float sceneObjectLightAmbient;
+	glm::vec3 sceneObjectLightAmbientColor;
+
 public:
 	sceneObject();
 	virtual ~sceneObject();
 
-	bool addMesh(meshObject *mesh, shaderManager* shadManag);
+	bool addMesh(meshObject *mesh, shaderManager *shadManag);
 	bool remMesh(std::size_t index);
 	bool render(cameraObject &camera);
+	void setLightAmbient(float value);
+	void setLightAmbientColor(glm::vec3 color);
 
 	std::vector<meshObject*>& getMeshes();
 	std::vector<shaderManager*>& getShaderes();
 	std::size_t size();
+	float getLightAmbient();
+	glm::vec3 getLightAmbientColor();
 };
 
 #endif

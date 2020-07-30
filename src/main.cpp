@@ -6,6 +6,7 @@
 #include "engine/scene/camera.hpp"
 #include "engine/scene/scene.hpp"
 #include <glm/gtc/matrix_transform.hpp>
+#include "engine/world/chunk.hpp"
 
 int main() {
 
@@ -33,16 +34,17 @@ int main() {
 
 	shaderManager.attachUniform("matrixPV", UNIFORM_USAGE_MATRIX_PROJVIEW);
 	shaderManager.attachUniform("matrixM", UNIFORM_USAGE_MATRIX_MODEL);
+	shaderManager.attachUniform("lightAmbient", UNIFORM_USAGE_LIGHT_AMBIENT);
+	shaderManager.attachUniform("lightAmbientColor", UNIFORM_USAGE_LIGHT_AMBIENT_COLOR);
 
 	shaderManager.use();
 
 	std::cout << "Pushing model data ..." << std::endl;
-	meshGenSphere mgs;
-	mgs.setResolution(15);
-	mgs.generate();
+	chunkObject co;
+	co.generateMesh();
 
 	meshObjectIndexed moi;
-	moi.push(mgs.vertices(), mgs.elements());
+	moi.push(co.meshVerts(), co.meshElems());
 	std::cout << "Setting model attributes ..." << std::endl;
 	moi.attribEnable(0);
 	moi.attribSet(0, MESH_ATTRIB_FLOAT, 3, 0);
@@ -55,15 +57,16 @@ int main() {
 
 	std::cout << "Creating scene ..." << std::endl;
 	cameraObject cam;
-	cam.setPos(glm::vec3(1.0f, 1.0f, 1.0f));
+	cam.setPos(glm::vec3(10.0f, 10.0f, 10.0f));
 	cam.setDir(-cam.getPos());
 	cam.update();
 
 	sceneObject so;
 	so.addMesh(&moi, &shaderManager);
+	so.setLightAmbient(0.1f);
 
 	glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	float angle = 0.0f;
 	float time = 0.0f, timePrev, timeSec = 0.0f;

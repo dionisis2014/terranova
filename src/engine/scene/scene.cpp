@@ -1,7 +1,8 @@
 #include "engine/scene/scene.hpp"
 
 sceneObject::sceneObject() {
-
+	sceneObjectLightAmbient = 0.5f;
+	sceneObjectLightAmbientColor = glm::vec3(1.0f, 1.0f, 1.0f);
 }
 
 sceneObject::~sceneObject() {
@@ -38,6 +39,7 @@ bool sceneObject::render(cameraObject &camera) {
 		if (sceneObjectShader[i]->use()) {
 			sceneObjectMeshes[i]->bind();
 
+			//set transforms
 			GLint loc = sceneObjectShader[i]->getUniform(UNIFORM_USAGE_MATRIX_PROJVIEW);
 			if (loc == -1) {
 				loc = sceneObjectShader[i]->getUniform(UNIFORM_USAGE_MATRIX_VIEW);
@@ -56,6 +58,15 @@ bool sceneObject::render(cameraObject &camera) {
 				return false;
 			sceneObjectShader[i]->pushUniformMatrix(loc, sceneObjectMeshes[i]->getMatrix());
 
+			//set light
+			loc = sceneObjectShader[i]->getUniform(UNIFORM_USAGE_LIGHT_AMBIENT);
+			if (loc >= 0)
+				sceneObjectShader[i]->pushUniformF(loc, sceneObjectLightAmbient);
+
+			loc = sceneObjectShader[i]->getUniform(UNIFORM_USAGE_LIGHT_AMBIENT_COLOR);
+			if (loc >= 0)
+				sceneObjectShader[i]->pushUniform3F(loc, sceneObjectLightAmbientColor);
+
 			if (sceneObjectMeshIndexed[i])
 				glDrawElements(GL_TRIANGLES, static_cast<meshObjectIndexed*>(sceneObjectMeshes[i])->getElems(), GL_UNSIGNED_INT, 0);
 			else
@@ -64,6 +75,16 @@ bool sceneObject::render(cameraObject &camera) {
 	}
 
 	return true;
+}
+
+void sceneObject::setLightAmbient(float value) {
+	sceneObjectLightAmbient = glm::clamp(value, 0.0f, 1.0f);
+}
+
+void sceneObject::setLightAmbientColor(glm::vec3 color) {
+	sceneObjectLightAmbientColor.x = glm::clamp(color.x, 0.0f, 1.0f);
+	sceneObjectLightAmbientColor.y = glm::clamp(color.y, 0.0f, 1.0f);
+	sceneObjectLightAmbientColor.z = glm::clamp(color.z, 0.0f, 1.0f);
 }
 
 std::vector<meshObject*>& sceneObject::getMeshes() {
@@ -76,4 +97,12 @@ std::vector<shaderManager*>& sceneObject::getShaderes() {
 
 std::size_t sceneObject::size() {
 	return sceneObjectMeshes.size();
+}
+
+float sceneObject::getLightAmbient() {
+	return sceneObjectLightAmbient;
+}
+
+glm::vec3 sceneObject::getLightAmbientColor() {
+	return sceneObjectLightAmbientColor;
 }
