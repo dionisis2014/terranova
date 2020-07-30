@@ -23,7 +23,7 @@ clean:
 
 run: all
 #	-@clear
-	@bin/terranova
+	@cd bin; ./terranova; cd ..
 
 build: all
 
