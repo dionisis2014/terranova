@@ -29,8 +29,8 @@ void cameraObject::setDir(glm::vec3 direction) {
 	if (direction.length() == 0.0f)
 		direction = glm::vec3(0.0f, 0.0f, -1.0f);
 	cameraObjectDir = glm::normalize(direction);
-	cameraObjectDirRight = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraObjectDir));
-	cameraObjectDirUp = glm::cross(cameraObjectDir, cameraObjectDirRight);
+	cameraObjectDirRight = glm::normalize(glm::cross(cameraObjectDir, glm::vec3(0.0f, 1.0f, 0.0f)));
+	cameraObjectDirUp = glm::cross(cameraObjectDirRight, cameraObjectDir);
 }
 
 void cameraObject::setFov(float fov) {
@@ -64,6 +64,14 @@ glm::vec3 cameraObject::getPos() {
 
 glm::vec3 cameraObject::getDir() {
 	return cameraObjectDir;
+}
+
+glm::vec3 cameraObject::getDirRight() {
+	return cameraObjectDirRight;
+}
+
+glm::vec3 cameraObject::getDirUp() {
+	return cameraObjectDirUp;
 }
 
 float cameraObject::getFov() {

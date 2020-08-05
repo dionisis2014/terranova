@@ -34,6 +34,8 @@ public:
 
 	glm::vec3 getPos();
 	glm::vec3 getDir();
+	glm::vec3 getDirRight();
+	glm::vec3 getDirUp();
 	float getFov();
 	float getRatio();
 	float getPlaneNear();

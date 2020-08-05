@@ -1,13 +1,16 @@
 #version 410
 
 //fragment data
-in vec3 fragmentColor;
+in vec2 fragmentUv;
 in vec3 fragmentNormal;
 
 //output data
 out vec4 fragmentColorOut;
 
+//uniforms
+uniform sampler2D fragmentTexture;
+
 void main() {
-	vec3 colorOutput = fragmentColor;
-	fragmentColorOut = vec4(colorOutput, 1.0);
+	vec4 textureColor = texture(fragmentTexture, fragmentUv);
+	fragmentColorOut = mix(textureColor, vec4(1.0,1.0,1.0,1.0), 0.5);
 }

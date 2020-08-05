@@ -1,7 +1,7 @@
 TARGET := terranova
 CXX := g++
 CXXFLAGS := -Wall -g
-LIBS := -lglfw -lGL -lGLEW -lpthread
+LIBS := -lglfw -lGL -lGLEW -lpthread -lSOIL
 
 SOURCES := $(shell find src -iname '*.cpp' -type f)
 OBJECTS := $(patsubst src%.cpp, build%.o, $(SOURCES))

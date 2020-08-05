@@ -16,41 +16,31 @@ bool meshGenChunk::generate() {
 	meshGeneratorObjectData.clear();
 	meshGeneratorObjectElem.clear();
 
-//	meshGeneratorObjectData.push_back({0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f});
-//	meshGeneratorObjectData.push_back({0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f});
-//	meshGeneratorObjectData.push_back({1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f});
-//
-//	meshGeneratorObjectElem.push_back(0);
-//	meshGeneratorObjectElem.push_back(1);
-//	meshGeneratorObjectElem.push_back(2);
-
 	unsigned int count = 0;
-	for (unsigned int x = 0; x < CHUNK_SIZE; x++) {
+	meshVertex_t vert;
+
+	for (unsigned int y = 0; y < CHUNK_SIZE; y++) {
 		for (unsigned int z = 0; z < CHUNK_SIZE; z++) {
-			for (unsigned int y = 0; y < CHUNK_SIZE; y++) {
-				for (unsigned int i = 0; i < 24; i++) {
-					meshGeneratorObjectData.push_back( {
-							{
-									MESH_GEN_CHUNK_BLOCK_VERTS[i].position.x + (float) x,
-									MESH_GEN_CHUNK_BLOCK_VERTS[i].position.y + (float) y,
-									MESH_GEN_CHUNK_BLOCK_VERTS[i].position.z + (float) z
-							},
-							{
-									MESH_GEN_CHUNK_BLOCK_VERTS[i].color.r,
-									MESH_GEN_CHUNK_BLOCK_VERTS[i].color.g,
-									MESH_GEN_CHUNK_BLOCK_VERTS[i].color.b
-							},
-							{
-									MESH_GEN_CHUNK_BLOCK_VERTS[i].normal.x,
-									MESH_GEN_CHUNK_BLOCK_VERTS[i].normal.y,
-									MESH_GEN_CHUNK_BLOCK_VERTS[i].normal.z
-							}
-					});
+			for (unsigned int x = 0; x < CHUNK_SIZE; x++) {
+
+				if (meshGenChunkBlocks[z * CHUNK_SIZE * CHUNK_SIZE + y * CHUNK_SIZE + x] != nullptr) {
+					for (unsigned int i = 0; i < 24; i++) {
+						vert.position.x = MESH_GEN_CHUNK_BLOCK_VERTS[i].position.x + (GLfloat) x;
+						vert.position.y = MESH_GEN_CHUNK_BLOCK_VERTS[i].position.y + (GLfloat) y;
+						vert.position.z = MESH_GEN_CHUNK_BLOCK_VERTS[i].position.z + (GLfloat) z;
+						vert.uv.u = MESH_GEN_CHUNK_BLOCK_VERTS[i].uv.u;
+						vert.uv.v = MESH_GEN_CHUNK_BLOCK_VERTS[i].uv.v;
+						vert.normal.x = MESH_GEN_CHUNK_BLOCK_VERTS[i].normal.x;
+						vert.normal.y = MESH_GEN_CHUNK_BLOCK_VERTS[i].normal.y;
+						vert.normal.z = MESH_GEN_CHUNK_BLOCK_VERTS[i].normal.z;
+						meshGeneratorObjectData.push_back(vert);
+					}
+					for (unsigned int i = 0; i < 36; i++) {
+						meshGeneratorObjectElem.push_back(MESH_GEN_CHUNK_BLOCK_ELEMS[i] + count * 24);
+					}
+					count++;
 				}
-				for (unsigned int i = 0; i < 36; i++) {
-					meshGeneratorObjectElem.push_back(MESH_GEN_CHUNK_BLOCK_ELEMS[i] + count * 36);
-				}
-				count++;
+
 			}
 		}
 	}
@@ -58,7 +48,7 @@ bool meshGenChunk::generate() {
 	return true;
 }
 
-void meshGenChunk::setBlocks(blockObject *blocks) {
+void meshGenChunk::setBlocks(blockObject **blocks) {
 	if (blocks != nullptr)
 		meshGenChunkBlocks = blocks;
 }

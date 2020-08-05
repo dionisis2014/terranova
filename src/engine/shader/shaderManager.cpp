@@ -61,6 +61,8 @@ bool shaderManager::attachUniform(std::string name, uniformUsage_t usage) {
 		case UNIFORM_USAGE_LIGHT_AMBIENT_COLOR:
 			shaderManagerUniformsSpecial[5] = location;
 			break;
+		case UNIFORM_USAGE_TEXTURE:
+			shaderManagerUniformsSpecial[6] = location;
 		default:
 			break;
 		}
@@ -138,6 +140,29 @@ bool shaderManager::pushUniform3F(GLint location, glm::vec3 vector) {
 	return true;
 }
 
+bool shaderManager::pushUniform1I(std::string name, int value) {
+	if (!flagLinked || shaderManagerUniforms.size() == 0)
+		return false;
+
+	for (std::size_t i = 0; i < shaderManagerUniforms.size(); i++)
+		if (shaderManagerUniforms[i].name == name) {
+			glUniform1i(shaderManagerUniforms[i].location, value);
+
+			return true;
+		}
+
+	return true;
+}
+
+bool shaderManager::pushUniform1I(GLint location, int value) {
+	if (!flagLinked || shaderManagerUniforms.size() == 0 || location < 0)
+		return false;
+
+	glUniform1i(location, value);
+
+	return true;
+}
+
 bool shaderManager::link() {
 	if (flagLinked || shaderManagerShaders.size() == 0)
 		return false;
@@ -183,27 +208,22 @@ GLint shaderManager::getUniform(uniformUsage_t usage) {
 	switch (usage) {
 	case UNIFORM_USAGE_MATRIX_MODEL:
 		return shaderManagerUniformsSpecial[0];
-		break;
 	case UNIFORM_USAGE_MATRIX_VIEW:
 		return shaderManagerUniformsSpecial[1];
-		break;
 	case UNIFORM_USAGE_MATRIX_PROJECTION:
 		return shaderManagerUniformsSpecial[2];
-		break;
 	case UNIFORM_USAGE_MATRIX_PROJVIEW:
 		return shaderManagerUniformsSpecial[3];
-		break;
 	case UNIFORM_USAGE_LIGHT_AMBIENT:
 		return shaderManagerUniformsSpecial[4];
-		break;
 	case UNIFORM_USAGE_LIGHT_AMBIENT_COLOR:
 		return shaderManagerUniformsSpecial[5];
-		break;
+	case UNIFORM_USAGE_TEXTURE:
+		return shaderManagerUniformsSpecial[6];
 	default:
 		for (std::size_t i = 0; i < shaderManagerUniforms.size(); i++)
 			if (shaderManagerUniforms[i].usage == usage)
 				return shaderManagerUniforms[i].location;
-		break;
 	}
 	return -1;
 }

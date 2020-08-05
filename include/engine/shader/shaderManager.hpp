@@ -17,6 +17,8 @@ typedef enum {
 	UNIFORM_USAGE_LIGHT_AMBIENT,
 	UNIFORM_USAGE_LIGHT_AMBIENT_COLOR,
 
+	UNIFORM_USAGE_TEXTURE,
+
 	UNIFORM_USAGE_GENERIC,
 
 	UNIFORM_USAGE_MAX
@@ -52,6 +54,8 @@ public:
 	bool pushUniformF(GLint location, float value);
 	bool pushUniform3F(std::string name, glm::vec3 vector);
 	bool pushUniform3F(GLint location, glm::vec3 vector);
+	bool pushUniform1I(std::string name, int value);
+	bool pushUniform1I(GLint location, int value);
 	bool link();
 	bool use();
 

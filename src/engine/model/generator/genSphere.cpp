@@ -36,7 +36,7 @@ bool meshGenSphere::generate() {
 				norm = glm::normalize(pos);
 				meshGeneratorObjectData.push_back( {
 						{ pos.x, pos.y, pos.z },
-						{ 1.0f, 1.0f, 1.0f },
+						{ 1.0f, 1.0f },
 						{ norm.x, norm.y, norm.z }
 				});
 			}
@@ -45,14 +45,14 @@ bool meshGenSphere::generate() {
 		norm = glm::normalize(pos);
 		meshGeneratorObjectData.push_back( {
 				{ pos.x, pos.y, pos.z },
-				{ 1.0f, 1.0f, 1.0f },
+				{ 1.0f, 1.0f },
 				{ norm.x, norm.y, norm.z }
 		});
 		pos = glm::vec3(0.0f, -1.0f, 0.0f);
 		norm = glm::normalize(pos);
 		meshGeneratorObjectData.push_back( {
 				{ pos.x, pos.y, pos.z },
-				{ 1.0f, 1.0f, 1.0f },
+				{ 1.0f, 1.0f},
 				{ norm.x, norm.y, norm.z }
 		});
 

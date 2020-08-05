@@ -9,13 +9,14 @@ sceneObject::~sceneObject() {
 
 }
 
-bool sceneObject::addMesh(meshObject *mesh, shaderManager *shadManag) {
+bool sceneObject::addMesh(meshObject *mesh, shaderManager *shadManag, textureObject *texture) {
 	if (mesh == nullptr || shadManag == nullptr)
 		return false;
 
 	sceneObjectMeshes.push_back(mesh);
 	sceneObjectMeshIndexed.push_back(dynamic_cast<meshObjectIndexed*>(mesh) != nullptr);
 	sceneObjectShader.push_back(shadManag);
+	sceneObjectTextures.push_back(texture);
 
 	return true;
 }
@@ -66,6 +67,15 @@ bool sceneObject::render(cameraObject &camera) {
 			loc = sceneObjectShader[i]->getUniform(UNIFORM_USAGE_LIGHT_AMBIENT_COLOR);
 			if (loc >= 0)
 				sceneObjectShader[i]->pushUniform3F(loc, sceneObjectLightAmbientColor);
+
+			//set texture
+			if (sceneObjectTextures[i] != nullptr) {
+				glActiveTexture(GL_TEXTURE0);
+				sceneObjectTextures[i]->bind();
+				loc = sceneObjectShader[i]->getUniform(UNIFORM_USAGE_TEXTURE);
+				if (loc >= 0)
+					sceneObjectShader[i]->pushUniform1I(loc, 0);
+			}
 
 			if (sceneObjectMeshIndexed[i])
 				glDrawElements(GL_TRIANGLES, static_cast<meshObjectIndexed*>(sceneObjectMeshes[i])->getElems(), GL_UNSIGNED_INT, 0);

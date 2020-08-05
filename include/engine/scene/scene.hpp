@@ -5,12 +5,14 @@
 #include "engine/model/mesh.hpp"
 #include "engine/shader/shaderManager.hpp"
 #include "engine/scene/camera.hpp"
+#include "engine/texture/texture.hpp"
 
 class sceneObject: public objectGeneric {
 protected:
 	std::vector<meshObject*> sceneObjectMeshes;
 	std::vector<bool> sceneObjectMeshIndexed;
 	std::vector<shaderManager*> sceneObjectShader;
+	std::vector<textureObject*> sceneObjectTextures;
 
 	float sceneObjectLightAmbient;
 	glm::vec3 sceneObjectLightAmbientColor;
@@ -19,7 +21,7 @@ public:
 	sceneObject();
 	virtual ~sceneObject();
 
-	bool addMesh(meshObject *mesh, shaderManager *shadManag);
+	bool addMesh(meshObject *mesh, shaderManager *shadManag, textureObject *texture);
 	bool remMesh(std::size_t index);
 	bool render(cameraObject &camera);
 	void setLightAmbient(float value);

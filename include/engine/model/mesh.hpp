@@ -8,34 +8,33 @@
 
 typedef union {
 	struct {
-		GLfloat xyz[3];
+		GLfloat x;
+		GLfloat y;
+		GLfloat z;
 	};
-	GLfloat x;
-	GLfloat y;
-	GLfloat z;
+	GLfloat xyz[3];
 } meshVertexPos_t;
 
 typedef union {
 	struct {
-		GLfloat rgb[3];
+		GLfloat u;
+		GLfloat v;
 	};
-	GLfloat r;
-	GLfloat g;
-	GLfloat b;
-} meshVertexCol_t;
+	GLfloat uv[2];
+} meshVertexUv_t;
 
 typedef union {
 	struct {
-		GLfloat xyz[3];
+		GLfloat x;
+		GLfloat y;
+		GLfloat z;
 	};
-	GLfloat x;
-	GLfloat y;
-	GLfloat z;
+	GLfloat xyz[3];
 } meshVertexNorm_t;
 
 typedef struct {
 	meshVertexPos_t position;
-	meshVertexCol_t color;
+	meshVertexUv_t uv;
 	meshVertexNorm_t normal;
 } meshVertex_t;
 
